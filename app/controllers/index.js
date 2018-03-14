@@ -9,15 +9,20 @@ export default Controller.extend({
   gameStore: service('game-store'),
   inpVal: '',
   actions: {
+    handleSubmit() {
+      this.get('gameStore').move();
+      return false;
+    },
     handleInput(val,event) {
       let key = event.originalEvent.keyCode;
       if (key===BACKSPACE) {
         this.get('gameStore').sliceEntered();
       } else {
         //TODO: help if nothing entered
-        this.get('gameStore').updateEntered(val.slice(-1));
+        //TODO: move letter2latin here
+        this.get('gameStore').updateEntered(val);
       }
-      this.set('inpVal', '');
+      this.set('inpVal', ' ');
     }
   }
 });

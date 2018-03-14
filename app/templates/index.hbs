@@ -1,5 +1,5 @@
 <h1>Round {{gameStore.round}}</h1>
-<form>
+<form {{action "handleSubmit" on="submit"}}>
   <label class="playstring">
       {{input value = entered type = "hidden"}}
       <span><!--

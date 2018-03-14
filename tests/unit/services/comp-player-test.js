@@ -16,7 +16,7 @@ module('Unit | Service | comp-player', function(hooks) {
     let history = [];
     let meta = {test: 'passed'};
 
-    service.playerMoves(city, history,  meta).then( (val) => {
+    service.userMoves(city, history,  meta).then( (val) => {
       assert.ok(val, 'something is returned');
       assert.ok(val.status, 'status is set');
       assert.ok(val.original, 'original is set');
@@ -31,7 +31,7 @@ module('Unit | Service | comp-player', function(hooks) {
     let history = [];
     let meta = {test: 'passed'};
 
-    service.playerMoves(city, history,  meta).then( (val) => {
+    service.userMoves(city, history,  meta).then( (val) => {
       
       assert.equal(val.compMove.city.first, city.last.toUpperCase(), 'new city first is the same as old city last');
       assert.ok(val.compMove.city.middle, 'middle is present');

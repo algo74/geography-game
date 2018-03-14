@@ -1,6 +1,7 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
+import { addFullName, letter2latin } from '../utils/city-functions';
 
 const NUMberOfLetters = 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
 
@@ -20,11 +21,22 @@ export default Service.extend({
     this.get('movesHistory.all').pushObject(city);
     this.get('movesHistory.unsorted.'+bin(city)).pushObject(city);
   },
+  addUserMove2History(city) {
+    this.addCityToHistory(city);
+    this.get('playstring').pushObject({val: city.middle, class: 'user-word'});
+    this.get('playstring').pushObject({val: city.last, class: 'chain-letter'});
+  },
+  addCompMove2History(city) {
+    this.addCityToHistory(city);
+    this.get('playstring').pushObject({val: city.middle, class: 'comp-word'});
+    this.get('playstring').pushObject({val: city.last, class: 'chain-letter'});
+    this.set('lastLetter', city.last);
+  },
   sliceEntered() {
     this.set('entered', this.get('entered').slice(0,-1));
   },
   updateEntered(letter) {
-    this.set('entered', this.get('entered')+letter);
+    this.set( 'entered', this.get('entered') + letter.slice(-1) );
   },
   newGame() {
     // make sure that new game does't respond to older games messages
@@ -62,11 +74,42 @@ export default Service.extend({
     this.addCityToHistory({first: 'M', middle: 'elbur', last: 'n', fullName: 'Melburn'});
     
   },
-  move(playerInput) {
-    if(playerInput === '') {
+  move() {
+    let entered = this.get('entered');
+    if(entered === '') {
+      alert('nothing is entered');
       return false;
     }
+    //prepare user move
+    //TODO: check for correct input
+    let userCity = {first: this.get('lastLetter').toUpperCase(), middle: this.get('entered').slice(0,-1), last: this.get('entered').slice(-1)  };
+    addFullName(userCity);
+    //final check
+    if(!letter2latin(userCity.last)) {
+      alert('last letter is not good');
+      return false;
+    }
+    this.set('lastUsedId', this.get('lastUsedId')+1);
+    let meta = {id: this.get('lastUsedId'), round: this.get('round')};
     // send the move to the comp player
+    this.get('compPlayer').userMoves(userCity, this.get('movesHistory.'+ userCity.last.toUpperCase()), meta)
+                          .then((val) => { this.gotResponce(this, val); });
+  },
+  gotResponce(self, responce) {
+    if (responce.original.meta.id <= self.get('lastProcessedId')) {
+      return;
+    }
+    if (responce.original.meta.round !== self.get('round')) {
+      return;
+    }
+    if(responce.status === 'ok') {
+      self.set('entered', ''); // this.clearEntry();
+      self.set('lastProcessedId', responce.original.meta.id);
+      self.set('round', self.get('round') + 1);
+      self.addUserMove2History(responce.original.city);
+      self.addCompMove2History(responce.compMove.city);
+      
+    }
   },
   init() {
     this._super(...arguments);

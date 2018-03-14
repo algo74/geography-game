@@ -44,6 +44,7 @@ navigation ul li {
 
 .chain-letter {
   color: red;
+  text-transform: uppercase;
 }
 .user-word {
   color: black;

@@ -1,5 +1,6 @@
 import Service from '@ember/service';
 import { Promise } from 'rsvp';
+import {addFullName} from '../utils/city-functions';
 
 const a = 'a'.charCodeAt(0);
 const z = 'z'.charCodeAt(0);
@@ -8,15 +9,13 @@ const randomLetter = () => {
   return String.fromCharCode(Math.floor(Math.random()*NUMberOfLetters) + a);
 }
 
-const addFullName = (city) => {
-  city.fullName = city.first.toUpperCase() + city.middle + city.last;
-}
+
 
 export default Service.extend({
-  playerMoves(city, pastLetterHistory, meta) {
+  userMoves(city, pastLetterHistory, meta) {
     let response = { status: 'ok', original: {city: city, meta: meta}};
     let middle = '';
-    let middleLength = Math.floor(Math.random()*10);
+    let middleLength = Math.floor(Math.random()*10)+1;
     for (let i = 0; i < middleLength; i++) {
       middle += randomLetter();
     }
