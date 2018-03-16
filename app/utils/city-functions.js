@@ -845,9 +845,9 @@ function letter2latin(c) {
   
   if (isBasicLetter(c)) {
 
-    return c;
+    return c.slice(0,1);
   }
-  // probably won't work at all because of the slice
+  
   return latin_map[c] || '';
 }
   
