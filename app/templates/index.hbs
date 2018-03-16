@@ -1,17 +1,14 @@
 <h1>Round {{gameStore.round}}</h1>
-<form {{action "handleSubmit" on="submit"}}>
-  <div class="playstring">
-      <label >
-          {{input value = entered type = "hidden"}}
-          <span><!--
-            -->{{#each gameStore.playstring as |bit|}}<span class="{{bit.class}}">{{bit.val}}</span>{{/each}}<!--
-            --><span class="user-word">{{gameStore.entered}}</span><!--
-        --></span>{{input value = inpVal key-up = (action 'handleInput') }}
-    </label>
-  </div>
+
+{{playstring-panel 
+    delegateSubmit=(action 'handleSubmit') 
+    entered=gameStore.entered 
+    playstring=gameStore.playstring 
+}}
+      
+  
 
       
   
-  <button>Go!</button>
-</form>
+
 {{history-panel class="played" gameStore=gameStore}}

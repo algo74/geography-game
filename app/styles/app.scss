@@ -35,14 +35,18 @@ nav ul {
     display: inline-block;
     width: 1000em;
   }
-  input {
-    width: 1px;
+  #player-input-dummy, #player-input {
+    font: inherit;
+    //text-decoration: underline;
+  }
+  input  {
     border: none;
     padding: 0;
     background: inherit;
     color: inherit;
     font: inherit;
     margin-left: -1px;
+    width: 1px;
     &:focus {
       background: #77F;
       

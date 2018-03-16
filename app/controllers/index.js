@@ -8,9 +8,13 @@ const BACKSPACE = 8;
 export default Controller.extend({
   gameStore: service('game-store'),
   inpVal: '',
+  resetInput() {
+
+  },
   actions: {
     handleSubmit() {
       this.get('gameStore').move();
+      this.resetInput();
       return false;
     },
     handleInput(val,event) {
