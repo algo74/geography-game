@@ -13,6 +13,7 @@ const randomLetter = () => {
 
 export default Service.extend({
   userMoves(city, pastLetterHistory, meta) {
+    //console.log(pastLetterHistory);
     let response = { status: 'ok', original: {city: city, meta: meta}};
     let middle = '';
     let middleLength = Math.floor(Math.random()*10)+1;

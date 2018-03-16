@@ -12,12 +12,12 @@ body {
 
 navigation ul {
   list-style-type: none;
-  
+  li {
+    display: inline-block;
+  }
 }
 
-navigation ul li {
-  display: inline-block;
-}
+
 
 
 .content h1 {
@@ -28,19 +28,30 @@ navigation ul li {
 .playstring {
   margin: auto;
   display: block;
-  text-align: center;
+  text-align: right;
   font-size: 2rem;
+  width: 95%;
+  max-width: 15em;
+  overflow: hidden;
+  label {
+    display: inline-block;
+    width: 1000em;
+  }
+  input {
+    width: 1px;
+    border: none;
+    padding: 0;
+    background: inherit;
+    color: inherit;
+    font: inherit;
+    margin-left: -1px;
+    &:focus {
+      background: #77F;
+      
+    }
+  }
 }
 
-.playstring input {
-  width: 1px;
-  border: none;
-  padding: 0;
-  background: inherit;
-  color: inherit;
-  font: inherit;
-  margin-left: -1px;
-}
 
 .chain-letter {
   color: red;
@@ -66,19 +77,18 @@ button {
 
 .played-header {
   background: #DFF;
-}
-.played-header span, .played-header select {
-  margin: 0.5rem auto;
-  display: inline-block;
-  vertical-align: baseline;
-  font-size: 1.1rem;
-  box-sizing: border-box;
-}
-
-.played-header select {
-  text-align: center;
-  width: 3em;
-  margin-left: 
+  span, select {
+    margin: 0.5rem auto;
+    display: inline-block;
+    vertical-align: baseline;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+  }
+  select {
+    text-align: center;
+    width: 3em;
+    
+  }
 }
 
 .played ul {

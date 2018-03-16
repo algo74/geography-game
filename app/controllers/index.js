@@ -22,7 +22,7 @@ export default Controller.extend({
         //TODO: move letter2latin here
         this.get('gameStore').updateEntered(val);
       }
-      this.set('inpVal', ' ');
+      this.set('inpVal', '');
     }
   }
 });

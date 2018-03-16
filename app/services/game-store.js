@@ -2,6 +2,8 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { addFullName, letter2latin } from '../utils/city-functions';
+import { A } from '@ember/array';
+import { defineProperty } from '@ember/object';
 
 const NUMberOfLetters = 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
 
@@ -9,17 +11,18 @@ const NUMberOfLetters = 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
 //   return city.first.toUpperCase() + city.middle + city.last;
 // }
 
-let bin = (city) => {
+function bin(city) {
   return city.first.toUpperCase();
 }
 
 export default Service.extend({
   compPlayer: service(), 
-
+  
   addCityToHistory(city) {
-    
-    this.get('movesHistory.all').pushObject(city);
+    let index = this.get('movesHistory.unsorted.'+bin(city)).length;
     this.get('movesHistory.unsorted.'+bin(city)).pushObject(city);
+    this.get('movesHistory.all').pushObject(city);
+    this.get('movesHistory.unsorted.'+bin(city)).arrayContentDidChange(index,0,1);
   },
   addUserMove2History(city) {
     this.addCityToHistory(city);
@@ -46,13 +49,31 @@ export default Service.extend({
     // init history
     // TODO: move some code to init
     this.set('movesHistory', {});
-    this.set('movesHistory.all', []);
+    this.set('movesHistory.all', A());
     this.set('movesHistory.unsorted', {});
     for(let i = 0; i < NUMberOfLetters; i++) {
       let origProp = 'movesHistory.unsorted.'+ String.fromCharCode(i + 'A'.charCodeAt(0));
       let sortProp = 'movesHistory.'+ String.fromCharCode(i + 'A'.charCodeAt(0));
-      this.set(origProp, []);
-      this.set(sortProp, computed(origProp, () => {return this.get(origProp).sortBy('fullName');}));
+      this.set(origProp, A());
+      defineProperty(this, sortProp, computed(origProp+'.[]', () => {
+        //console.log('recalculating '+origProp);
+        //console.log(this.get(origProp).length);
+        return this.get(origProp).sortBy('fullName');
+      }));
+      // this.set(sortProp, computed.sort(origProp, function(a, b){
+      //   console.log('a: '+a);
+      //   if(!b) {
+      //     if(!a) return 0;
+      //     return 1;
+      //   }
+      //   if(!a) {
+      //     return -1;
+      //   }
+      //   if (a.fullName > b.fullName) {
+      //     return 1;
+      //   } 
+      //   return -1;
+      // }));
     }
 
     // init other game parameters
@@ -114,6 +135,7 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.lastUsedId=0;
+    this.sortOrder = ['fullName','first'];
     this.newGame();
   }
 });
