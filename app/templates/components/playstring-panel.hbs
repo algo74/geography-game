@@ -1,9 +1,9 @@
-<form {{action "handleSubmit" on="submit"}}>
+<form {{action "handleSubmit" on="submit" }} autocomplete="off">
   <div class="playstring" >
     <label >
         <span><!--
           -->{{#each playstring as |bit|}}<span class="{{bit.class}}">{{bit.val}}</span>{{/each}}<!--
-      --></span>{{input id="player-input" value = entered input = (action 'handleInput') }}
+      --></span>{{input id="player-input" input=(action 'handleInput') focus-in=(action 'handleFocus') value = entered }}
       <div id="player-input-dummy" style="position: absolute; x-left: -1000%; white-space: pre;"></div>
     </label>
   </div>

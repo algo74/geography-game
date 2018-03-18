@@ -39,6 +39,10 @@ nav ul {
     font: inherit;
     //text-decoration: underline;
   }
+  #player-input-dummy {
+    position: absolute;
+    left: -2000em;
+  }
   input  {
     border: none;
     padding: 0;
@@ -48,7 +52,8 @@ nav ul {
     margin-left: -1px;
     width: 1px;
     &:focus {
-      background: #77F;
+      outline: 0;
+      // background: #77F;
       
     }
   }
