@@ -22,7 +22,7 @@ export default Component.extend({
       this.input.width('1px');
     },
     handleFocus() {
-      console.log("focus in");
+      //console.log("focus in");
       let input=this.getInput();
       setTimeout(function() {
         let length = input.val().length;
@@ -38,7 +38,7 @@ export default Component.extend({
       
       this.dummy.html(this.input.val());
       this.input.width(this.dummy.width() || 1);
-      console.log(this.dummy.width() );
+      //console.log(this.dummy.width() );
     }
   }
 });
