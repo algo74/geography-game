@@ -8,25 +8,21 @@ const BACKSPACE = 8;
 export default Controller.extend({
   gameStore: service('game-store'),
   inpVal: '',
-  resetInput() {
-
-  },
+  
   actions: {
     handleSubmit() {
-      this.get('gameStore').move();
-      this.resetInput();
-      return false;
+      return this.get('gameStore').move();
     },
-    handleInput(val,event) {
-      let key = event.originalEvent.keyCode;
-      if (key===BACKSPACE) {
-        this.get('gameStore').sliceEntered();
-      } else {
-        //TODO: help if nothing entered
-        //TODO: move letter2latin here
-        this.get('gameStore').updateEntered(val);
-      }
-      this.set('inpVal', '');
-    }
+    // handleInput(val,event) {
+    //   let key = event.originalEvent.keyCode;
+    //   if (key===BACKSPACE) {
+    //     this.get('gameStore').sliceEntered();
+    //   } else {
+    //     //TODO: help if nothing entered
+    //     //TODO: move letter2latin here
+    //     this.get('gameStore').updateEntered(val);
+    //   }
+    //   this.set('inpVal', '');
+    // }
   }
 });

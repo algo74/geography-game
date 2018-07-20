@@ -15,11 +15,17 @@ export default Component.extend({
   },
   actions: {
     handleSubmit() {
-      this.get('delegateSubmit')();
-      // reset input
-      this.getInput();
-      this.input.val('');
-      this.input.width('1px');
+      this.get('delegateSubmit')()
+        .then((isMoved) => {
+          if (isMoved) {
+            // reset input
+            //this.getInput();
+            //this.input.val('');
+            this.send('handleInput');
+          }
+      });
+      
+      
     },
     handleFocus() {
       //console.log("focus in");
@@ -30,7 +36,6 @@ export default Component.extend({
       }, 0);
     },
     handleInput() {
-      
       this.getInput();
       if(!this.dummy) {
         this.dummy = this.$('#player-input-dummy');

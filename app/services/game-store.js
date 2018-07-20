@@ -1,9 +1,10 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
-import { addFullName, letter2latin } from '../utils/city-functions';
 import { A } from '@ember/array';
 import { defineProperty } from '@ember/object';
+
+import { addFullName, letter2latin } from '../utils/city-functions';
 
 const NUMberOfLetters = 'Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1;
 
@@ -26,13 +27,29 @@ export default Service.extend({
   },
   addUserMove2History(city) {
     this.addCityToHistory(city);
-    this.get('playstring').pushObject({val: city.middle, class: 'user-word'});
-    this.get('playstring').pushObject({val: city.last, class: 'chain-letter'});
+    this.get('playstring').pushObject({
+      val: city.middle,
+      class: 'user-word',
+      color: 'black'
+    });
+    this.get('playstring').pushObject({
+      val: city.last,
+      class: 'chain-letter',
+      color: 'hsl(' + (this.get('round') * 37 % 130 + 50) + ', 100%, 50%)'
+    });
   },
   addCompMove2History(city) {
     this.addCityToHistory(city);
-    this.get('playstring').pushObject({val: city.middle, class: 'comp-word'});
-    this.get('playstring').pushObject({val: city.last, class: 'chain-letter'});
+    this.get('playstring').pushObject({
+      val: city.middle,
+      class: 'comp-word',
+      color: 'blue'
+    });
+    this.get('playstring').pushObject({
+      val: city.last,
+      class: 'chain-letter',
+      color: 'hsl(' + ((this.get('round') * 41 % 130 + 280) % 360) + ', 100%, 50%)'
+    });
     this.set('lastLetter', city.last);
   },
   sliceEntered() {
@@ -81,18 +98,19 @@ export default Service.extend({
     this.set('entered', '');
 
     // get a city to start 
+    // TODO: add colors
     this.set('playstring', [{
-      val: "Melbur",
+      val: "Melbourn",
       class: "comp-word"
     }, {
-      val: "N",
+      val: "E",
       class: "chain-letter"
     }
     ]);
-    this.set('lastLetter', "N");
+    this.set('lastLetter', "E");
     
     
-    this.addCityToHistory({first: 'M', middle: 'elbur', last: 'n', fullName: 'Melburn'});
+    this.addCityToHistory({ first: 'M', middle: 'elbourn', last: 'e', fullName: 'Melbourne'});
     
   },
   move() {
@@ -110,18 +128,31 @@ export default Service.extend({
       alert('last letter is not good');
       return false;
     }
+    // check local history
+    let localHistory = this.get('movesHistory.' + userCity.first.toUpperCase());
+    for (let city of localHistory) {
+      if (city.fullName.toUpperCase() === userCity.fullName.toUpperCase()) {
+        alert('This city was already used');
+        return false;
+      }
+    }
     this.set('lastUsedId', this.get('lastUsedId')+1);
     let meta = {id: this.get('lastUsedId'), round: this.get('round')};
     // send the move to the comp player
-    this.get('compPlayer').userMoves(userCity, this.get('movesHistory.'+ userCity.last.toUpperCase()), meta)
-                          .then((val) => { this.gotResponce(this, val); });
+    return this.get('compPlayer')
+    .userMoves(userCity, this.get('movesHistory.' + userCity.last.toUpperCase()), meta)
+    .then((val) => { return this.gotResponce(this, val); });
   },
   gotResponce(self, responce) {
-    if (responce.original.meta.id <= self.get('lastProcessedId')) {
-      return;
+    console.log('got response');
+    console.log(responce);
+    if (+responce.original.meta.id <= self.get('lastProcessedId')) {
+      console.log('old id');
+      return false;
     }
-    if (responce.original.meta.round !== self.get('round')) {
-      return;
+    if (+responce.original.meta.round !== self.get('round')) {
+      console.log('wrong round');
+      return false;
     }
     if(responce.status === 'ok') {
       self.set('entered', ''); // this.clearEntry();
@@ -129,7 +160,10 @@ export default Service.extend({
       self.set('round', self.get('round') + 1);
       self.addUserMove2History(responce.original.city);
       self.addCompMove2History(responce.compMove.city);
-      
+      return true;
+    } else {
+      alert(responce.status);
+      return false;
     }
   },
   init() {
