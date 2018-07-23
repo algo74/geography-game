@@ -7,7 +7,7 @@ export default Component.extend({
     this._super(...arguments);
     let city = this.get('data');
     let mapElement = this.get('maps').getMapElement(city);
-    this.$('.map-container').empty().append(mapElement);
+    this.$('.map-container').empty().append(mapElement); // could be better but this is good enough
   },
   actions: {
     onCloseInfo() {
