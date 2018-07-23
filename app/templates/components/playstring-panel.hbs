@@ -3,7 +3,7 @@
     <div class="playstring" >
       <label >
           <span><!--
-            -->{{#each playstring as |bit|}}<span class="{{bit.class}}" style="color:{{bit.color}};">{{bit.val}}</span>{{/each}}<!--
+            -->{{#each playstring as |bit|}}<span class="{{bit.class}}" style={{bit.style}}>{{bit.val}}</span>{{/each}}<!--
         --></span>{{input id="player-input" input=(action 'handleInput') focus-in=(action 'handleFocus') value = entered }}
         <div id="player-input-dummy" style="position: absolute; x-left: -1000%; white-space: pre;"></div>
       </label>

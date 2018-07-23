@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 import { computed } from '@ember/object';
 import { A } from '@ember/array';
 import { defineProperty } from '@ember/object';
+import { htmlSafe } from '@ember/string'
 
 import { addFullName, letter2latin } from '../utils/city-functions';
 
@@ -30,12 +31,12 @@ export default Service.extend({
     this.get('playstring').pushObject({
       val: city.middle,
       class: 'user-word',
-      color: 'black'
+      style: htmlSafe('color: black')
     });
     this.get('playstring').pushObject({
       val: city.last,
       class: 'chain-letter',
-      color: 'hsl(' + (this.get('round') * 37 % 130 + 50) + ', 100%, 50%)'
+      style: htmlSafe('color: hsl(' + (this.get('round') * 37 % 130 + 50) + ', 100%, 50%);')
     });
   },
   addCompMove2History(city) {
@@ -43,12 +44,12 @@ export default Service.extend({
     this.get('playstring').pushObject({
       val: city.middle,
       class: 'comp-word',
-      color: 'blue'
+      style: htmlSafe('color: black')
     });
     this.get('playstring').pushObject({
       val: city.last,
       class: 'chain-letter',
-      color: 'hsl(' + ((this.get('round') * 41 % 130 + 280) % 360) + ', 100%, 50%)'
+      style: htmlSafe('color: hsl(' + ((this.get('round') * 41 % 130 + 280) % 360) + ', 100%, 50%);')
     });
     this.set('lastLetter', city.last);
   },

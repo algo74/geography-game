@@ -15,9 +15,7 @@ export default Controller.extend({
       this.get('gameStore').set('selectedCity', city);
       this.get('gameStore').set('doShowInfo', !this.get('gameStore').get('doShowInfo')); // a little hack to recenter map on wide screens if the same city is clicked 
     },
-    onCancelCityView() {
-
-    },
+    
     onCloseInfo() {
       this.get('gameStore').set('doShowInfo', false);
     }
