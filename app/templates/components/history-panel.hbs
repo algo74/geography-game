@@ -1,5 +1,5 @@
 <div class="played-header">
-    <span>Played:</span> 
+    <span>Game History:</span> 
     <select id="hist-view-select" {{action 'changeHistoryView' on='change'}}>
         <option value="all">all</option>
         <option value="A">A</option>
@@ -32,6 +32,6 @@
 </div>
 <ul>
     {{#each histViewPanel as |city|}}
-        <li>{{city.fullName}}</li>
+        <li {{action 'selectCity' city on='click'}}>{{city.fullName}}</li>
     {{/each}}
 </ul>

@@ -1,14 +1,17 @@
-<h1>Round {{gameStore.round}}</h1>
+<h1 class="score-table">Round {{gameStore.round}}</h1>
 
-{{playstring-panel 
+{{playstring-panel
+    class="playstring-panel"
     delegateSubmit=(action 'handleSubmit') 
     entered=gameStore.entered 
     playstring=gameStore.playstring 
 }}
       
-  
+<div class="p-and-i">
 
-      
-  
-
-{{history-panel class="played" gameStore=gameStore}}
+  {{history-panel class="played" gameStore=gameStore onCitySelect = (action 'onCitySelect')}}
+  {{!-- {{#if gameStore.doShowInfo}}
+    {{info-panel class="info-panel" onClose=(action 'onCloseInfo') data=gameStore.selectedCity}}
+  {{/if}} --}}
+  {{info-panel class=(if gameStore.doShowInfo "info-panel do-show" "info-panel") onClose=(action 'onCloseInfo') style="border: solid;" data=gameStore.selectedCity}}
+</div>

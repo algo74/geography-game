@@ -12,6 +12,9 @@ export default Component.extend({
       let selected =this.$('#hist-view-select option:selected').text();
       this.set('histViewSelected', selected);
       //console.log(this.histViewSelected);
+    },
+    selectCity(city) {
+      this.get('onCitySelect')(city);
     }
   }
 });

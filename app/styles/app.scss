@@ -1,37 +1,203 @@
-html {
-  width: 100%;
-  height: 100%;
-}
-body {
-  background-color: #ddd;
-  width: 100%;
-  height: 100%;
-  
-}
 
+// Core Styles
+@import 'ember-burger-menu/variables';
+@import 'ember-burger-menu/structure';
 
-nav ul {
-  list-style-type: none;
-  li {
-    display: inline-block;
+// Animations
+@import 'ember-burger-menu/animations/push';
+
+@import 'ember-burger-menu';
+
+@mixin panel-shadow($color) {
+  box-shadow: 1px 1px 5px $color;
+}
+@mixin click-and-hoverable($front, $back) {
+  color: $front;
+  background: $back;
+  cursor: pointer;
+  &:hover {
+    color: $back;
+    background: $front;
   }
 }
 
+$color1: rgba(196, 122, 192, 1);
+$color2: rgba(84, 86, 119, 1);
+$background-color: rgba(167, 173, 198, 1);
+$background-color2: rgb(255, 246, 234);
+$contrast: rgba(44, 19, 32, 1);
 
-.content h1 {
-  text-align: center;
-  text-transform: uppercase;
+//$background-color:  #ddd;
+
+$padding-correction: 1rem;
+
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 12px;
+  @media screen and (min-width: 480px) {
+    font-size: 14px;
+  }
+  @media screen and (min-width: 800px) {
+    font-size: 16px;
+  }
+  @media screen and (min-width: 1200px) {
+    font-size: 18px;
+  }
+}
+body {
+  font-family: Verdana, Geneva, sans-serif;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body > div {
+  height: 100%;
 }
 
+
+button {
+  display: block;
+  margin: auto;
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 0.2em;
+}
+.banner, .bm-menu h1 {
+  padding: 1rem;
+  margin: 0;
+  font-size: 1.2rem;
+  @media screen and (min-width: 480px) {
+    font-size: 1.5rem;
+  }
+  @media screen and (min-width: 640px) {
+    font-size: 2rem;
+  }
+}
+.banner {
+  background: $color1;
+  @include panel-shadow(#555);
+}
+button.menu-button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 1rem;
+  border-radius: 0.25rem;
+  &:hover {
+    background: $background-color2;
+  }
+  img {
+    height: 1.2rem;
+    @media screen and (min-width: 480px) {
+      height: 1.5rem;
+    }
+    @media screen and (min-width: 640px) {
+      height: 2rem;
+    }
+  }
+}
+
+.bm-menu {
+  background: $color2;
+  h1 {
+    color: $background-color2;
+    text-align: center;
+  }
+  hr {
+    margin: -2px 2rem 0;
+    @include panel-shadow(#333);
+    border-width: 1px;
+    border-color: $color1;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.2rem;
+  
+    @include click-and-hoverable($background-color2, $color2);
+    a {
+      text-decoration: none;
+      color: inherit;
+
+    }
+  }
+  button {
+    display: block;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    @include click-and-hoverable($contrast, $color1);
+    @include panel-shadow(#333);
+  }
+}
+
+.content {
+  background-color: $background-color;
+  height: 100%;
+  color: $contrast;
+  display: flex;
+  flex-flow: column;
+  * {
+    box-sizing: border-box;
+  }
+}
+.score-table {
+  text-align: center;
+  text-transform: uppercase;
+  position: absolute;
+  top: 0;
+  left: 35%;
+  width: 35%;
+  background: $color2;
+  color: $background-color2;
+  padding: 1.5rem;
+  margin: 0;
+  border-radius: 0 0 1rem 1rem;
+  border: solid 2px $contrast;
+  border-top: none;
+  @include panel-shadow(#555);
+  font-size: 1.2rem;
+  @media screen and (min-width: 480px) {
+    font-size: 1.5rem;
+  }
+  @media screen and (min-width: 640px) {
+    font-size: 2rem;
+  }
+}
+
+form {
+  display: flex;
+  margin: 3rem auto 1rem;  width: 95%;
+  max-width: 40rem;
+
+}
+.playstring-cover{
+  margin-right: 1rem;
+  display: block;
+  flex: 0 1 100%;
+  width: calc(100% - 6rem);
+  font-size: 2em;
+  padding: 0.4em;
+  background: #fff;
+  border-radius: 0.2em;
+  @include panel-shadow(#555);
+  
+}
 .playstring {
   margin: auto;
   display: block;
   text-align: right;
-  font-size: 2rem;
-  width: 95%;
-  max-width: 15em;
+  font-size: 1em;
+  width: 100%;
   overflow: hidden;
-  background: #fff;
   label {
     display: inline-block;
     width: 1000em;
@@ -71,37 +237,138 @@ nav ul {
 .comp-word {
   color: blue;
 }
+button.go-button {
+  font-size: 2em;
+  background: $background-color2;
+  border-radius: 0.2em;
+  padding: 0.4em;
+  @include panel-shadow(#555);
+  @include click-and-hoverable($contrast, $background-color2);
+}
 
-button {
-  display: block;
-  margin: auto;
+
+.p-and-i {
+  flex: 0 1 100%;
+  overflow: hidden;
+  > div {
+    //border: 0.5rem solid $background-color;
+    box-sizing: border-box;
+    margin: 0.5rem;
+    @include panel-shadow(#555);
+  }
 }
 
 .played {
-  max-width: 20em;
+  display: flex;
+  float: left;
+  flex-flow: column;
   margin: auto;
-  background: #FFD;
+  background: $background-color2;
+  height: calc(100% - #{$padding-correction});
+  width: calc(100% - #{$padding-correction});
+  @media screen and (min-width: 480px) {
+    width: calc(50% - #{$padding-correction});
+  }
+  @media screen and (min-width: 640px) {
+    width: calc(40% - #{$padding-correction});
+  }
+  @media screen and (min-width: 800px) {
+    width: calc(30% - #{$padding-correction});
+  }
+  @media screen and (min-width: 1200px) {
+    width: calc(25% - #{$padding-correction});
+  }
+  
+  .played-header {
+    background: $color2;
+    color: $background-color2;
+    padding: 0.5rem;
+    span, select {
+      margin: 0.5rem auto;
+      display: inline-block;
+      vertical-align: baseline;
+      font-size: 1.1rem;
+      box-sizing: border-box;
+    }
+    select {
+      text-align: center;
+      width: 3em;
+      float: right;
+    }
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem 0;
+    line-height: 175%;
+    overflow-y: auto;
+    flex: 0 1 auto;
+    li {
+      padding: 0 1rem;
+      @include click-and-hoverable($contrast, $background-color2);
+    }
+  }
 }
 
-.played-header {
-  background: #DFF;
-  span, select {
-    margin: 0.5rem auto;
-    display: inline-block;
-    vertical-align: baseline;
-    font-size: 1.1rem;
-    box-sizing: border-box;
+.info-panel {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: -0.5rem;
+  left: -1000.5rem;
+  &.do-show {
+    left: -0.5rem;
   }
-  select {
-    text-align: center;
-    width: 3em;
-    
+  @media screen and (min-width: 480px) {
+    display: block;
+    position: unset;
+    height: calc(100% - #{$padding-correction});
+    float: right;
+    width: calc(50% - #{$padding-correction});
+  }
+  @media screen and (min-width: 640px) {
+    width: calc(60% - #{$padding-correction});
+  }
+  @media screen and (min-width: 800px) {
+    width: calc(70% - #{$padding-correction});
+  }
+  @media screen and (min-width: 1200px) {
+    width: calc(75% - #{$padding-correction});
+  }
+  .map-container {
+    width: 100%;
+    height: 100%;
+  }
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+  button {
+    position: absolute;
+    @media screen and (min-width: 480px) {
+      display: none;
+    }
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    margin: 0.5rem;
+    @include click-and-hoverable($contrast, $color1);
+    @include panel-shadow(#555);
   }
 }
 
-.played ul {
-  list-style-type: none;
-  margin: 0;
+.text-content {
+  max-width: 60em;
+  width: calc(100% - 1rem);
+  margin: 3rem auto;
   padding: 1rem;
-  line-height: 175%;
+  background: $background-color2;
+  @include panel-shadow(#555);
+  min-height: 70vh;
+}
+
+.copyright {
+  margin: 1rem;
+  text-align: center;
 }

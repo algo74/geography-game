@@ -1,16 +1,19 @@
-<header>
-    <h1>Geography</h1>
-    <nav>
-        <ul>
-            <li>Info</li>
-        </ul>
-    </nav>
-    
-</header>
-<div class="content">
-
-  {{outlet}}
-  
-  </div>
-<footer>
-</footer>          
+{{#burger-menu animation="push" position="right" as |burger|}} 
+  {{#burger.menu itemTagName="li" as |menu|}}
+    <h1>Menu</h1>
+    <hr>
+    <ul>
+       {{#menu.item dismissOnClick="true"}} {{link-to 'Back to Game' 'index'}} {{/menu.item}}
+      {{#menu.item dismissOnClick="true"}} {{link-to 'About' 'about'}} {{/menu.item}}
+      {{#menu.item dismissOnClick="true"}} {{link-to 'Contact Us' 'contact'}} {{/menu.item}}
+    </ul>
+    <button {{action burger.state.actions.close}}>Close</button>
+  {{/burger.menu}} 
+  {{#burger.outlet}}
+    <div class="content">
+      <div class="banner">Geography</div>
+      <button class="menu-button" {{action burger.state.actions.toggle}}><img src="images/icons8-menu.svg"></button>
+      {{outlet}}
+    </div>
+  {{/burger.outlet}} 
+{{/burger-menu}}

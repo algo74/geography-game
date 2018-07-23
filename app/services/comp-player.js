@@ -1,5 +1,4 @@
 import Service from '@ember/service';
-import { Promise } from 'rsvp';
 
 import $ from 'jquery';
 

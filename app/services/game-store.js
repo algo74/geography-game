@@ -77,20 +77,6 @@ export default Service.extend({
         //console.log(this.get(origProp).length);
         return this.get(origProp).sortBy('fullName');
       }));
-      // this.set(sortProp, computed.sort(origProp, function(a, b){
-      //   console.log('a: '+a);
-      //   if(!b) {
-      //     if(!a) return 0;
-      //     return 1;
-      //   }
-      //   if(!a) {
-      //     return -1;
-      //   }
-      //   if (a.fullName > b.fullName) {
-      //     return 1;
-      //   } 
-      //   return -1;
-      // }));
     }
 
     // init other game parameters
@@ -109,9 +95,20 @@ export default Service.extend({
     ]);
     this.set('lastLetter', "E");
     
-    
-    this.addCityToHistory({ first: 'M', middle: 'elbourn', last: 'e', fullName: 'Melbourne'});
-    
+    const startCity = {
+      first: 'M',
+      middle: 'elbourn',
+      last: 'e',
+      fullName: 'Melbourne',
+      coords: {
+        lat: -37.82003131,
+        lng: 144.9750162
+      }
+    };
+    this.addCityToHistory(startCity);
+    // init info-panel
+    this.set('selectedCity', startCity);
+
   },
   move() {
     let entered = this.get('entered');
@@ -158,8 +155,13 @@ export default Service.extend({
       self.set('entered', ''); // this.clearEntry();
       self.set('lastProcessedId', responce.original.meta.id);
       self.set('round', self.get('round') + 1);
+      // update coordinates for user city
+      responce.original.city.coords = responce.origCoords;
+      // save moves
       self.addUserMove2History(responce.original.city);
       self.addCompMove2History(responce.compMove.city);
+      // update current city (for info-panel)
+      self.set('selectedCity', responce.compMove.city);
       return true;
     } else {
       alert(responce.status);
