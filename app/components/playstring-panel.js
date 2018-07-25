@@ -52,8 +52,8 @@ export default Component.extend({
   },
   actions: {
     handleSubmit() {
-      this.get('delegateSubmit')()
-        .then((isMoved) => {
+      let tmp = this.get('delegateSubmit')();
+      tmp.then((isMoved) => {
           if (isMoved) {
             // reset input
             //this.getInput();

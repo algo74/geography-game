@@ -20,11 +20,24 @@ function bin(city) {
 export default Service.extend({
   compPlayer: service(), 
   
+  addAliases(city) {
+    let aliases = this.get('usedAliases');
+    let name = city.fullName;
+    city.aliases.forEach(value => aliases[value] = name);
+    this.set('usedAliases', aliases);
+  },
+
+  hasSeenCity(name) {
+    let aliases = this.get('usedAliases');
+    return aliases[name.toLowerCase()] || false;
+  },
+
   addCityToHistory(city) {
     let index = this.get('movesHistory.unsorted.'+bin(city)).length;
     this.get('movesHistory.unsorted.'+bin(city)).pushObject(city);
     this.get('movesHistory.all').pushObject(city);
-    this.get('movesHistory.unsorted.'+bin(city)).arrayContentDidChange(index,0,1);
+    this.get('movesHistory.unsorted.' + bin(city)).arrayContentDidChange(index, 0, 1);
+    this.addAliases(city);
   },
   addUserMove2History(city) {
     this.addCityToHistory(city);
@@ -40,6 +53,12 @@ export default Service.extend({
     });
   },
   addCompMove2History(city) {
+    // add needed fields
+    city.fullName = city.name;
+    city.first = letter2latin(city.name.slice(0, 1));
+    city.last = letter2latin(city.name.slice(-1));
+    city.middle = city.name.slice(1, -1);
+
     this.addCityToHistory(city);
     this.get('playstring').pushObject({
       val: city.middle,
@@ -52,6 +71,9 @@ export default Service.extend({
       style: htmlSafe('color: hsl(' + ((this.get('round') * 41 % 130 + 280) % 360) + ', 100%, 50%);')
     });
     this.set('lastLetter', city.last);
+    // update current city (for info-panel)
+    this.set('selectedCity', city);
+    
   },
   sliceEntered() {
     this.set('entered', this.get('entered').slice(0,-1));
@@ -69,6 +91,7 @@ export default Service.extend({
     this.set('movesHistory', {});
     this.set('movesHistory.all', A());
     this.set('movesHistory.unsorted', {});
+    this.set('usedAliases', new Set());
     for(let i = 0; i < NUMberOfLetters; i++) {
       let origProp = 'movesHistory.unsorted.'+ String.fromCharCode(i + 'A'.charCodeAt(0));
       let sortProp = 'movesHistory.'+ String.fromCharCode(i + 'A'.charCodeAt(0));
@@ -104,7 +127,8 @@ export default Service.extend({
       coords: {
         lat: -37.82003131,
         lng: 144.9750162
-      }
+      },
+      aliases: ["melbourne", "mel", "mel'burn", "melbourne city", "melbournum", "melburn", "melburna", "melburnas", "melburno", "melvourni", "mel beirn", "melaborna", "melbeoleun", "melbeon", "melporn", "meruborun", "mlbwrn", "mo er ben"]
     };
     this.addCityToHistory(startCity);
     // init info-panel
@@ -127,18 +151,16 @@ export default Service.extend({
       return false;
     }
     // check local history
-    let localHistory = this.get('movesHistory.' + userCity.first.toUpperCase());
-    for (let city of localHistory) {
-      if (city.fullName.toUpperCase() === userCity.fullName.toUpperCase()) {
-        alert('This city was already used');
-        return false;
-      }
+    let seenCity = this.hasSeenCity(userCity.fullName)
+    if (seenCity) {
+      alert(`${seenCity}, i.e. this city has been already played`);
+      return new Promise(function (resolve) { resolve(false) });
     }
     this.set('lastUsedId', this.get('lastUsedId')+1);
     let meta = {id: this.get('lastUsedId'), round: this.get('round')};
     // send the move to the comp player
     return this.get('compPlayer')
-    .userMoves(userCity, this.get('movesHistory.' + userCity.last.toUpperCase()), meta)
+    .userMoves(userCity, meta)
     .then((val) => { return this.gotResponce(this, val); });
   },
   gotResponce(self, responce) {
@@ -152,18 +174,37 @@ export default Service.extend({
       console.log('wrong round');
       return false;
     }
-    if(responce.status === 'ok') {
+    if (responce.status === 'ok') {
+      // note: no need to check the user city, we should check it before we sent
       self.set('entered', ''); // this.clearEntry();
       self.set('lastProcessedId', responce.original.meta.id);
       self.set('round', self.get('round') + 1);
-      // update coordinates for user city
-      responce.original.city.coords = responce.origCoords;
-      // save moves
+      // update info for user city
+      responce.original.city.coords = responce.userCity.coords;
+      responce.original.city.aliases = responce.userCity.aliases; 
+      // also update fullname (TODO)
+      if (responce.userCity.name !== '' && responce.userCity.name != responce.original.city.fullName) {
+        if (responce.userCity.name.toLowerCase() === responce.original.city.fullName.toLowerCase()) {
+          responce.original.city.fullName = responce.userCity.name;
+        } else {
+          responce.original.city.fullName += ` (${responce.userCity.name})`;
+        }
+      }
+      // save user move
       self.addUserMove2History(responce.original.city);
-      self.addCompMove2History(responce.compMove.city);
-      // update current city (for info-panel)
-      self.set('selectedCity', responce.compMove.city);
-      return true;
+      // check if any of the computer cities are new
+      let nCompCities = responce.compMove.length;
+      for (let i = 0; i < nCompCities; i++) {
+        let compCity = responce.compMove[i];
+        if (!self.hasSeenCity(compCity.name)) {
+          // save comp move
+          self.addCompMove2History(compCity);
+          return true;
+        }
+      }
+      // no new cities in computer response
+      alert('you won!');
+      return false;
     } else {
       alert(responce.status);
       return false;

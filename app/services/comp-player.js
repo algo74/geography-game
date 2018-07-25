@@ -18,7 +18,7 @@ export default Service.extend({
     this._super(...arguments);
     this.set('url', 'http://localhost:9090/api/');
   },
-  userMoves(city, lastLetterHistory, meta) {
+  userMoves(city, meta) {
     //console.log(pastLetterHistory);
     //let response = {original: {city: city, meta: meta}};
     // let middle = '';
@@ -35,7 +35,6 @@ export default Service.extend({
       cache: false,
       data: {
         city: city,
-        lastLetterHistory: lastLetterHistory,
         meta: meta
       },
       timeout: 2000,
