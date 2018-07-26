@@ -71,9 +71,18 @@ export default Service.extend({
       style: htmlSafe('color: hsl(' + ((this.get('round') * 41 % 130 + 280) % 360) + ', 100%, 50%);')
     });
     this.set('lastLetter', city.last);
+    // shorten playstring if needed
+    this.adjustPlaystring();
     // update current city (for info-panel)
     this.set('selectedCity', city);
     
+  },
+  adjustPlaystring() {
+    let playstring = this.get('playstring');
+    if (playstring.length >= 100) {
+      playstring = playstring.splice(0, 50);
+      console.log('shortened playstring');
+    }
   },
   sliceEntered() {
     this.set('entered', this.get('entered').slice(0,-1));
