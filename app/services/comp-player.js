@@ -19,16 +19,6 @@ export default Service.extend({
     this.set('url', 'http://localhost:9090/api/');
   },
   userMoves(city, meta) {
-    //console.log(pastLetterHistory);
-    //let response = {original: {city: city, meta: meta}};
-    // let middle = '';
-    // let middleLength = Math.floor(Math.random()*10)+1;
-    // for (let i = 0; i < middleLength; i++) {
-    //   middle += randomLetter();
-    // }
-    
-    // let newCity = {first: city.last.toUpperCase(), middle: middle, last: randomLetter()};
-    // addFullName(newCity);
     return $.ajax({
       method: 'POST',
       url: this.get('url') + 'move',
@@ -38,15 +28,9 @@ export default Service.extend({
         meta: meta
       },
       timeout: 2000,
-      // success: function (compResp) {
-      //   console.log('got back from server');
-      //   console.log('compRest');
-      //   response.status = compResp.status;
-      //   response.city = compResp.city;
-      // }
     }).then(function (compResp) {
-      console.log('got back from server');
-      console.log(compResp);
+      // console.log('got back from server');
+      // console.log(compResp);
       return compResp;
       }).catch (function(e) {
         console.log('error: ' + JSON.stringify(e));

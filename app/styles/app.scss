@@ -373,3 +373,64 @@ button.go-button {
   margin: 1rem;
   text-align: center;
 }
+#modal_alert {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  z-index: 6000;
+  left: 0;
+  top: 0;
+  background-color: rgba($background-color,.6);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  > div {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: relative;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    //min-width: 400px;
+    //min-height: 250px;
+    max-height: calc(100vh - 90px);
+    @media screen and (min-width: 640px) {
+      max-width: calc(100vw - 2rem);
+    }
+    background: $color1;
+    @include panel-shadow(#555);
+    div {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      padding: 1rem 2rem;
+      margin: 2rem 2rem 0;
+      font-size: 2rem;
+      text-align: center;
+    }
+    button {
+      margin: 2rem auto;
+      padding: 0.5rem;
+      font-size: 2em;
+      border-radius: 0.2em;
+      padding: 0.4em 1em;
+      display: inline-block;
+      @include click-and-hoverable($background-color2, $color2);
+      @include panel-shadow(#555);
+    }
+  }
+}

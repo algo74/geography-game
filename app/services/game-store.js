@@ -138,8 +138,7 @@ export default Service.extend({
   move() {
     let entered = this.get('entered');
     if(entered === '') {
-      alert('nothing is entered');
-      return false;
+      return new Promise(function (resolve) { resolve('nothing is entered') });
     }
     //prepare user move
     //TODO: check for correct input
@@ -147,14 +146,12 @@ export default Service.extend({
     addFullName(userCity);
     //final check
     if(!letter2latin(userCity.last)) {
-      alert('last letter is not good');
-      return false;
+      return new Promise(function (resolve) { resolve('last letter is not good') });
     }
     // check local history
     let seenCity = this.hasSeenCity(userCity.fullName)
     if (seenCity) {
-      alert(`${seenCity}, i.e. this city has been already played`);
-      return new Promise(function (resolve) { resolve(false) });
+      return new Promise(function (resolve) { resolve(`${seenCity}, i.e. this city has been already played`) });
     }
     this.set('lastUsedId', this.get('lastUsedId')+1);
     let meta = {id: this.get('lastUsedId'), round: this.get('round')};
@@ -164,8 +161,8 @@ export default Service.extend({
     .then((val) => { return this.gotResponce(this, val); });
   },
   gotResponce(self, responce) {
-    console.log('got response');
-    console.log(responce);
+    // console.log('got response');
+    // console.log(responce);
     if (+responce.original.meta.id <= self.get('lastProcessedId')) {
       console.log('old id');
       return false;
@@ -203,11 +200,10 @@ export default Service.extend({
         }
       }
       // no new cities in computer response
-      alert('you won!');
-      return false;
+      
+      return 'you won!';
     } else {
-      alert(responce.status);
-      return false;
+      return responce.status;
     }
   },
   init() {

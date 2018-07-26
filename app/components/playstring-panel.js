@@ -5,7 +5,6 @@ export default Component.extend({
   dummy: null,
   init() {
     this._super(...arguments);
-    console.log('init playstring');
     const position = this.entered.length;
     this.position = { start: position, end: position };
   },
@@ -54,18 +53,18 @@ export default Component.extend({
     handleSubmit() {
       let tmp = this.get('delegateSubmit')();
       tmp.then((isMoved) => {
-          if (isMoved) {
+          if (isMoved === true) {
             // reset input
             //this.getInput();
             //this.input.val('');
             this.send('handleInput');
-          }
+          } 
+      
       });
       
       
     },
     handleFocus() {
-      //console.log("focus in");
       let input=this.getInput();
       setTimeout(function() {
         let length = input.val().length;

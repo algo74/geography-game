@@ -9,7 +9,17 @@ export default Controller.extend({
   
   actions: {
     handleSubmit() {
-      return this.get('gameStore').move();
+      return this.get('gameStore').move().then((message) => {
+        if (message && message !== true) {
+          if (message === 'not found') {
+            message = 'I know almost 100 thousand cities but not this one. Try something else.';
+          }
+          this.transitionToRoute('index.modal', {
+            queryParams: { title: message }
+          });
+        }
+        return message === true;
+      });
     },
     onCitySelect(city) {
       this.get('gameStore').set('selectedCity', city);
