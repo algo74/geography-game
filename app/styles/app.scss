@@ -185,6 +185,7 @@ form {
   display: block;
   flex: 0 1 100%;
   width: calc(100% - 6rem);
+  overflow: hidden;
   font-size: 2em;
   padding: 0.4em;
   background: #fff;
