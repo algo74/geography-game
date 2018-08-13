@@ -63,7 +63,7 @@ export default Service.extend({
     this.get('playstring').pushObject({
       val: city.middle,
       class: 'comp-word',
-      style: htmlSafe('color: black')
+      style: htmlSafe('color: blue')
     });
     this.get('playstring').pushObject({
       val: city.last,
