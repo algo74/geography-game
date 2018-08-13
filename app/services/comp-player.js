@@ -27,7 +27,7 @@ export default Service.extend({
         city: city,
         meta: meta
       },
-      timeout: 10000,
+      timeout: 3000,
     }).then(function (compResp) {
       // console.log('got back from server');
       // console.log(compResp);
