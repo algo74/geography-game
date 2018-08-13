@@ -3,13 +3,14 @@
 {{playstring-panel
     class="playstring-panel"
     delegateSubmit=(action 'handleSubmit') 
+    onCitySelect=(action 'onCitySelect')
     entered=gameStore.entered 
     playstring=gameStore.playstring 
 }}
       
 <div class="p-and-i">
 
-  {{history-panel class="played" gameStore=gameStore onCitySelect = (action 'onCitySelect')}}
+  {{history-panel class="played" gameStore=gameStore onCitySelect=(action 'onCitySelect')}}
   {{!-- {{#if gameStore.doShowInfo}}
     {{info-panel class="info-panel" onClose=(action 'onCloseInfo') data=gameStore.selectedCity}}
   {{/if}} --}}

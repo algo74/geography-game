@@ -44,7 +44,8 @@ export default Service.extend({
     this.get('playstring').pushObject({
       val: city.middle,
       class: 'user-word',
-      style: htmlSafe('color: black')
+      style: htmlSafe('color: black'),
+      city: city
     });
     this.get('playstring').pushObject({
       val: city.last,
@@ -63,7 +64,8 @@ export default Service.extend({
     this.get('playstring').pushObject({
       val: city.middle,
       class: 'comp-word',
-      style: htmlSafe('color: blue')
+      style: htmlSafe('color: blue'),
+      city: city
     });
     this.get('playstring').pushObject({
       val: city.last,
@@ -117,17 +119,6 @@ export default Service.extend({
     this.set('entered', '');
 
     // get a city to start 
-    // TODO: add colors
-    this.set('playstring', [{
-      val: "Melbourn",
-      class: "comp-word"
-    }, {
-      val: "E",
-      class: "chain-letter"
-    }
-    ]);
-    this.set('lastLetter', "E");
-    
     const startCity = {
       first: 'M',
       middle: 'elbourn',
@@ -139,6 +130,19 @@ export default Service.extend({
       },
       aliases: ["melbourne", "mel", "mel'burn", "melbourne city", "melbournum", "melburn", "melburna", "melburnas", "melburno", "melvourni", "mel beirn", "melaborna", "melbeoleun", "melbeon", "melporn", "meruborun", "mlbwrn", "mo er ben"]
     };
+    // TODO: add colors
+    this.set('playstring', [{
+      val: "Melbourn",
+      class: "comp-word",
+      city: startCity
+    }, {
+      val: "E",
+      class: "chain-letter"
+    }
+    ]);
+    this.set('lastLetter', "E");
+    
+    
     this.addCityToHistory(startCity);
     // init info-panel
     this.set('selectedCity', startCity);

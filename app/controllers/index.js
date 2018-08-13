@@ -7,7 +7,6 @@ import $ from 'jquery';
 export default Controller.extend({
   gameStore: service('game-store'),
   inpVal: '',
-  
   actions: {
     handleSubmit() {
       return this.get('gameStore').move().then((message) => {
@@ -27,12 +26,17 @@ export default Controller.extend({
     onCitySelect(city) {
       this.get('gameStore').set('selectedCity', null); // a little hack to recenter map on wide screens if the same city is clicked 
       this.get('gameStore').set('selectedCity', city);
-      this.get('gameStore').set('doShowInfo', $('.info-panel').css('position') === 'fixed'); // set to true only if info-panel in fullscreen mode
+      if ($('.info-panel').css('position') === 'fixed') {
+      // info-panel is in fullscreen mode
+        this.transitionToRoute('index.map');
+        //this.get('gameStore').set('doShowInfo', true); 
+      }
+      
 
     },
     
     onCloseInfo() {
-      this.get('gameStore').set('doShowInfo', false);
+      history.back();
     }
     // handleInput(val,event) {
     //   let key = event.originalEvent.keyCode;

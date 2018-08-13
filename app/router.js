@@ -12,6 +12,7 @@ Router.map(function() {
 
   this.route('index', { path: '' }, function() {
     this.route('modal');
+    this.route('map');
   });
 });
 

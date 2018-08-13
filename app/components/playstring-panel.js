@@ -61,14 +61,16 @@ export default Component.extend({
           } 
       
       });
-      
-      
+    },
+    selectCity(city) {
+      if (city) this.get('onCitySelect')(city);
+      this.send('handleFocus');
     },
     handleFocus() {
       let input=this.getInput();
-      setTimeout(function() {
+      setTimeout(() => {
         let length = input.val().length;
-        input[0].setSelectionRange(length,length);
+        this.setCaretPosition(input[0],length,length);
       }, 0);
     },
     handleInput() {
@@ -78,12 +80,13 @@ export default Component.extend({
         this.dummy = this.$('#player-input-dummy');
       }
       // save caret position
-      this.position = this.getCaretPosition(this.input[0]);
+      let input = this.getInput()[0];
+      this.position = this.getCaretPosition(input);
       // resize
       this.dummy.html(this.input.val());
       this.input.width(this.dummy.width() || 1);
       //restore caret position, in case it won't rerended...
-      this.setCaretPosition(this.input[0], this.position.start, this.position.end);
+      this.setCaretPosition(input, this.position.start, this.position.end);
     }
   }
 });
