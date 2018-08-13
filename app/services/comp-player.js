@@ -16,7 +16,7 @@ import $ from 'jquery';
 export default Service.extend({
   init() {
     this._super(...arguments);
-    this.set('url', 'http://localhost:9090/api/');
+    this.set('url', 'https://geography-server.herokuapp.com/api/');
   },
   userMoves(city, meta) {
     return $.ajax({
@@ -27,7 +27,7 @@ export default Service.extend({
         city: city,
         meta: meta
       },
-      timeout: 2000,
+      timeout: 10000,
     }).then(function (compResp) {
       // console.log('got back from server');
       // console.log(compResp);
