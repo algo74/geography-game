@@ -35,6 +35,7 @@ html {
   width: 100%;
   height: 100%;
   font-size: 12px;
+  overflow: hidden;
   @media screen and (min-width: 480px) {
     font-size: 14px;
   }
@@ -143,6 +144,8 @@ button.menu-button {
 .content {
   background-color: $background-color;
   height: 100%;
+  overflow: auto;
+  position: relative;
   color: $contrast;
   display: flex;
   flex-flow: column;
@@ -376,6 +379,7 @@ button.go-button {
   background: $background-color2;
   @include panel-shadow(#555);
   min-height: 70vh;
+  overflow: auto;
 }
 
 .copyright {
