@@ -1,5 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import $ from 'jquery';
 
 
 export default Route.extend({
@@ -11,6 +12,8 @@ export default Route.extend({
   actions: {
     willTransition() {
       this.get('gameStore').set('doShowInfo', false);
+      let input = $('#player-input');
+      input[0].focus();
       return true;
     }
   }

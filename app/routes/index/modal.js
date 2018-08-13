@@ -1,4 +1,6 @@
 import Route from '@ember/routing/route';
+import $ from 'jquery';
+
 
 export default Route.extend({
   queryParams: {
@@ -14,6 +16,13 @@ export default Route.extend({
   setupController(controller, model) {
     this._super(controller, model);//don't forget this setup line!
     controller.set('title', undefined);
+  },
+  actions: {
+    willTransition() {
+      let input = $('#player-input');
+      input[0].focus();
+      return true;
+    }
   }
   
 });
