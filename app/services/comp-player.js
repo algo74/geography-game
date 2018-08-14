@@ -17,6 +17,8 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.set('url', 'https://geography-server.herokuapp.com/api/');
+    console.log('init comp-player');
+    this.userMoves({ "fullName": "Madrid", "first": "m", "last": "d" }, {dummy: true}); // hack to wake up server
   },
   userMoves(city, meta) {
     return $.ajax({
@@ -34,6 +36,12 @@ export default Service.extend({
       return compResp;
       }).catch (function(e) {
         console.log('error: ' + JSON.stringify(e));
+        if (e.statusText && e.statusText === 'timeout') {
+          return {
+            status: 'timeout',
+            original: { meta: meta }
+          }
+        }
         return {
           status: 'error',
           original: { meta: meta },

@@ -14,7 +14,9 @@ export default Controller.extend({
           if (message === 'not found') {
             message = 'I know almost 100 thousand cities but not this one. Try something else.';
           } else if (message === 'error') {
-            message = 'Something went wrong. Please try again. Please contact developer if the error persists.';
+            message = 'Something went wrong. Please check your connection and try again. Please contact developer if the error persists.';
+          } else if (message === 'timeout') {
+            message = 'Could not connect to server. It could be still waking up. Please try again in a few seconds.';
           }
           this.transitionToRoute('index.modal', {
             queryParams: { title: message }

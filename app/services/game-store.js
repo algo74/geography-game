@@ -96,7 +96,8 @@ export default Service.extend({
     // make sure that new game does't respond to older games messages
     this.lastUsedId++;
     this.lastProcessedId = this.lastUsedId;
-    
+    // init comp-player
+    this.get('compPlayer'); // hackish, but work
     // init history
     // TODO: move some code to init
     this.set('movesHistory', {});
